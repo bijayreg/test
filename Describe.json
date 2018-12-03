@@ -1,0 +1,65 @@
+{
+    "pipeline": {
+        "roleArn": "arn:aws:iam::755005926555:role/service-role/AWSCodePipelineServiceRole-us-east-1-test",
+        "stages": [
+            {
+                "name": "Source",
+                "actions": [
+                    {
+                        "inputArtifacts": [],
+                        "name": "Source",
+                        "actionTypeId": {
+                            "category": "Source",
+                            "owner": "ThirdParty",
+                            "version": "1",
+                            "provider": "GitHub"
+                        },
+                        "outputArtifacts": [
+                            {
+                                "name": "SourceArtifact"
+                            }
+                        ],
+                        "configuration": {
+                            "Owner": "bijayreg",
+                            "Repo": "test",
+                            "PollForSourceChanges": "true",
+                            "Branch": "master",
+                        },
+                        "runOrder": 1
+                    }
+                ]
+            },
+            {
+                "name": "Deploy",
+                "actions": [
+                    {
+                        "inputArtifacts": [
+                            {
+                                "name": "SourceArtifact"
+                            }
+                        ],
+                        "name": "Deploy",
+                        "actionTypeId": {
+                            "category": "Deploy",
+                            "owner": "AWS",
+                            "version": "1",
+                            "provider": "CodeDeploy"
+                        },
+                        "outputArtifacts": [],
+                        "configuration": {
+                            "ApplicationName": "WordpressApp",
+                            "DeploymentGroupName": "WordpressDeploymentGroup"
+                        },
+                        "runOrder": 1
+                    }
+                ]
+            }
+        ],
+        "artifactStore": {
+            "type": "S3",
+            "location": "codepipeline-us-east-1-933080761954"
+        },
+        "name": "test",
+        "version": 1
+    }
+}
